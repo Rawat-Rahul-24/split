@@ -1,0 +1,42 @@
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.split-container {
+    padding: 0%;
+    margin:0%;
+    
+}
+
+.row-change {
+    margin-top: 5px;
+    margin-left: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.header-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 10px;
+    max-height: 25px;
+}
+
+.add-button {
+    width: 25px;
+    border-radius: 15%;
+}
+
+.remove-button {
+    width: 25px;
+    border-radius: 15%;
+}
+
+.person {
+    height:25px
+}
+
