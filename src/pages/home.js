@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { handleSelect } from "@/utilities/handlers";
+import { handleSelect, handleInput } from "@/utilities/handlers";
 import Header from "@/layouts/header";
 import "../styles/home.css";
+
+const split_history = new Map();
 
 const Home = () => {
   const defItem = {
@@ -12,7 +14,7 @@ const Home = () => {
     all: false,
   };
 
-  const totalFooter = [0, 1, 2];
+  const totalFooter = ["Total", 0, 0];
   const [row, setRow] = useState([defItem]);
   const [person, setPerson] = useState([]);
   const [total, setTotal] = useState([...totalFooter]);
@@ -51,12 +53,13 @@ const Home = () => {
       }
     });
 
-    total.push(n);
+    total.push(0);
     setTotal(total);
     console.log(row);
     const updatedRow = [...row];
     setRow([...updatedRow]);
     setPerson([...person, per]);
+    console.log(total);
   };
 
   //remove the last person
@@ -140,6 +143,17 @@ const Home = () => {
                       <td key={id} className="price-box">
                         <input
                           type="text"
+                          onChange={(e) =>
+                            handleInput(
+                              e,
+                              key,
+                              ele,
+                              row,
+                              setRow,
+                              total,
+                              setTotal
+                            )
+                          }
                           placeholder="price"
                           className="price-input"
                         />
@@ -149,7 +163,17 @@ const Home = () => {
                         <input
                           type="checkbox"
                           id={ele}
-                          onChange={() => handleSelect(key, ele, row, setRow)}
+                          onChange={() =>
+                            handleSelect(
+                              key,
+                              ele,
+                              row,
+                              setRow,
+                              total,
+                              setTotal,
+                              split_history
+                            )
+                          }
                           checked={item[ele]}
                           className="check-input"
                         />
@@ -161,7 +185,7 @@ const Home = () => {
             })}
             <tr className="footer">
               {total.map((item, index) => {
-                return item == 0 ? (
+                return index == 0 ? (
                   <td key={index} className="total-box">
                     <input
                       type="text"
@@ -174,7 +198,7 @@ const Home = () => {
                   <td key={index}>
                     <input
                       type="text"
-                      value=""
+                      value={item}
                       id={item}
                       readOnly
                       className="total"
