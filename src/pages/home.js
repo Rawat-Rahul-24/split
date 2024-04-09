@@ -151,7 +151,8 @@ const Home = () => {
                               row,
                               setRow,
                               total,
-                              setTotal
+                              setTotal,
+                              split_history
                             )
                           }
                           placeholder="price"

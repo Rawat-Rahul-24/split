@@ -27,7 +27,6 @@ export const handleSelect = (
   if (ele === "all" || allSelected) {
     const currValue = updatedRow[key][ele];
     const newItem = Object.entries(updatedRow[key]);
-    console.log(newItem);
     newItem.forEach((item, index) => {
       if (index != 0) {
         if (!currValue) {
@@ -50,7 +49,16 @@ export const handleSelect = (
   setTotal([...priceUpdatedRow]);
 };
 
-export const handleInput = (e, key, ele, row, setRow, total, setTotal) => {
+export const handleInput = (
+  e,
+  key,
+  ele,
+  row,
+  setRow,
+  total,
+  setTotal,
+  split_history
+) => {
   const updatedRow = [...row];
   const changeVal =
     e.target.value > updatedRow[key][ele]
@@ -58,14 +66,17 @@ export const handleInput = (e, key, ele, row, setRow, total, setTotal) => {
       : Math.abs(e.target.value - updatedRow[key][ele]);
   updatedRow[key][ele] = e.target.value;
 
-  // const priceUpdatedRow = getPriceCalculation(
-  //   updatedRow[key],
-  //   changeVal,
-  //   total, null, null
-  // );
-  // console.log(priceUpdatedRow);
+  const priceUpdatedRow = getPriceCalculation(
+    key,
+    updatedRow,
+    total,
+    true,
+    null,
+    split_history
+  );
+  console.log(priceUpdatedRow);
   setRow([...updatedRow]);
-  // setTotal([...priceUpdatedRow]);
+  setTotal([...priceUpdatedRow]);
 };
 
 function getPriceCalculation(
@@ -79,16 +90,15 @@ function getPriceCalculation(
   if (updatedRow[key] != 0 || updatedRow[key] != "") {
     updateTotals(key, total, updatedRow, currVal, ele, split_history);
   }
+  console.log(total);
   return total;
 }
 
 function updateTotals(key, total, updatedRow, currVal, ele, split_history) {
   const item = updatedRow[key];
-  console.log(item);
   const price = item["0"];
   let share = 0;
   const history_obj = {};
-  console.log(total);
   //if all element is selected divide the price for all
   if (ele === "all") {
     share = divideIntoEqualParts(price, Object.keys(item).length - 2);
@@ -101,21 +111,17 @@ function updateTotals(key, total, updatedRow, currVal, ele, split_history) {
         clear_split_history(split_history, key);
         clear_total(total, prev_history);
       }
-      console.log("adding share to all ", share);
       let k = 0;
       total.forEach((p, index) => {
         if (index != 0) {
           p = parseFloat(p + share[k]).toFixed(2);
-          console.log(p);
           total[index] = parseFloat(p);
           history_obj[index] = parseFloat(share[k]);
           k++;
         }
       });
-      console.log(total);
+
       split_history.set(key, history_obj);
-      console.log(history_obj);
-      console.log(split_history);
     } else {
       //reduce the price from all people if all elemeted in unchecked
       const prev_history = split_history.get(key);
@@ -131,6 +137,7 @@ function updateTotals(key, total, updatedRow, currVal, ele, split_history) {
         count.push(key);
       }
     }
+    console.log(count);
     const prev_history = split_history.get(key);
     clear_split_history(split_history, key);
     if (currVal === true) {
@@ -140,20 +147,25 @@ function updateTotals(key, total, updatedRow, currVal, ele, split_history) {
         clear_total(total, prev_history);
       }
 
-      share = divideIntoEqualParts(price, count.length + 1);
+      share = divideIntoEqualParts(
+        price,
+        ele === null ? count.length : count.length + 1
+      );
       count.forEach((p, index) => {
         if (item[p] === true) {
           total[p] += share[index];
           history_obj[p] = share[index];
         }
       });
+      if (ele != undefined) {
+        total[ele] += share[share.length - 1];
+        history_obj[ele] = share[share.length - 1];
+      }
 
-      total[ele] += share[share.length - 1];
-      history_obj[ele] = share[share.length - 1];
       split_history.set(key, history_obj);
+      console.log(split_history);
     } else {
       clear_total(total, prev_history);
-      console.log("total after removing all elements ", total);
 
       share = divideIntoEqualParts(price, count.length - 1);
       let k = 0;
@@ -165,27 +177,25 @@ function updateTotals(key, total, updatedRow, currVal, ele, split_history) {
         }
       });
       split_history.set(key, history_obj);
-      console.log(split_history);
     }
   }
 }
 
 function divideIntoEqualParts(number, parts) {
-  console.log("for splitting price = ", number, " parts = ", parts);
   if (parts == 0) {
     return Array.from({ length: 1 }, () => number);
   }
   const result = number / parts;
   const partValue = parseFloat((Math.floor(result * 100) / 100).toFixed(2));
-  console.log("divided share ", partValue); // Calculate part value with two decimal places
+  // Calculate part value with two decimal places
 
   const dividedParts = new Array(parts);
   dividedParts.fill(partValue); // Initialize array with equal parts
-  console.log("share array ", dividedParts);
+
   // Adjust the last part to ensure the sum equals the original number
   const totalSum = dividedParts.reduce((acc, curr) => acc + curr, 0);
   let difference = parseFloat((number - totalSum).toFixed(2));
-  console.log(difference);
+
   if (difference > 0) {
     while (difference > 0) {
       const r = Math.floor(Math.random() * parts);
@@ -193,8 +203,6 @@ function divideIntoEqualParts(number, parts) {
       difference = parseFloat((difference - 0.01).toFixed(2));
     }
   }
-
-  console.log(dividedParts);
 
   return dividedParts;
 }
@@ -206,7 +214,6 @@ function clear_total(total, prev_history) {
       p = parseFloat(p - prev_history[index]).toFixed(2);
       total[index] = parseFloat(p);
     }
-    console.log(p);
   });
 }
 
