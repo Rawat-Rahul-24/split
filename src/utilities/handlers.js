@@ -125,8 +125,10 @@ function updateTotals(key, total, updatedRow, currVal, ele, split_history) {
     } else {
       //reduce the price from all people if all elemeted in unchecked
       const prev_history = split_history.get(key);
-      clear_split_history(split_history, key);
-      clear_total(total, prev_history);
+      if (prev_history != undefined) {
+        clear_split_history(split_history, key);
+        clear_total(total, prev_history);
+      }
     }
     console.log(total);
   } else {

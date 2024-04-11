@@ -77,18 +77,21 @@ const Home = () => {
   const handleRemovePerson = () => {
     let n = Object.keys(row[0]).length - 2;
 
-    row.map((item, key) => {
-      delete item[n];
-      console.log(item);
-    });
+    if (n > 2) {
+      row.map((item, key) => {
+        console.log(item, n);
+        delete item[n];
+        console.log(item);
+      });
 
-    total.pop();
-    setTotal(total);
-    console.log(row);
-    const updatedRow = [...row];
-    setRow([...updatedRow]);
-    person.pop();
-    setPerson([...person]);
+      total.pop();
+      setTotal(total);
+      console.log(row);
+      const updatedRow = [...row];
+      setRow([...updatedRow]);
+      person.pop();
+      setPerson([...person]);
+    }
   };
 
   return (
