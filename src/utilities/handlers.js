@@ -247,3 +247,24 @@ function checkIfAllElementsSelected(item, ele) {
 function clear_split_history(split_history, key) {
   split_history.delete(key);
 }
+
+//function to clear split total when deleteing a row
+export const clear_total_on_row_delete = (
+  key,
+  row,
+  total,
+  split_history,
+  setTotal
+) => {
+  const updatedRow = [...row];
+  const priceUpdatedRow = getPriceCalculation(
+    key,
+    updatedRow,
+    total,
+    false,
+    "all",
+    split_history
+  );
+  console.log(priceUpdatedRow);
+  setTotal([...priceUpdatedRow]);
+};

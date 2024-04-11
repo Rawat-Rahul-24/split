@@ -1,6 +1,10 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { handleSelect, handleInput } from "@/utilities/handlers";
+import {
+  handleSelect,
+  handleInput,
+  clear_total_on_row_delete,
+} from "@/utilities/handlers";
 import Header from "@/layouts/header";
 import "../styles/home.css";
 
@@ -33,6 +37,13 @@ const Home = () => {
   //delete the last row
   const handleDeleteRow = () => {
     if (row.length > 1) {
+      clear_total_on_row_delete(
+        row.length - 1,
+        row,
+        total,
+        split_history,
+        setTotal
+      );
       const updatedRow = row.slice(0, row.length - 1);
       setRow([...updatedRow]);
     }
@@ -47,14 +58,14 @@ const Home = () => {
     row.forEach((item, key) => {
       console.log("key ", item, " n ", n);
       if (item["all"]) {
-        item[n] = true;
-      } else {
-        item[n] = false;
+        item["all"] = false;
       }
+      item[n] = false;
     });
 
     total.push(0);
     setTotal(total);
+
     console.log(row);
     const updatedRow = [...row];
     setRow([...updatedRow]);
