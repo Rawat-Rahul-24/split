@@ -57,9 +57,19 @@ export const handleInput = (
   setRow,
   total,
   setTotal,
-  split_history
+  split_history,
+  setIsValidInput
 ) => {
   const updatedRow = [...row];
+  const val = +e.target.value;
+  console.log(val);
+  const regex = /^\d+(\.\d{1,2})?$/;
+
+  if ((val != "" && !val) || !regex.test(val)) {
+    setIsValidInput(false);
+    return;
+  }
+  setIsValidInput(true);
   const changeVal =
     e.target.value > updatedRow[key][ele]
       ? e.target.value
