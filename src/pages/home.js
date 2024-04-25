@@ -3,6 +3,7 @@ import { useState } from "react";
 import Draggable from "react-draggable";
 import SplitScreen from "./split-screen";
 import Header from "@/layouts/header";
+import "../styles/home.css";
 
 function Home() {
   const [splitScreen, setSplitScreen] = useState([]);
@@ -17,22 +18,22 @@ function Home() {
   };
 
   return (
-    <div>
+    <div className="home-main">
       <Header />
       {splitScreen.length > 0 ? (
-        <div>
-          {splitScreen.map((ScreenComponent, index) => {
+        <FullScreenPanel>
+          {splitScreen.map((ScreenComponent) => {
             return (
-              <Draggable key={index}>
+              <Draggable bounds="parent">
                 <div>
                   <ScreenComponent />
                 </div>
               </Draggable>
             );
           })}
-        </div>
+        </FullScreenPanel>
       ) : (
-        <div>
+        <div className="no-split-screen">
           <button onClick={handleAddScreen}>+</button>
           <p>Add a new split screen to start splitting you bill</p>
         </div>
@@ -40,5 +41,9 @@ function Home() {
     </div>
   );
 }
+
+const FullScreenPanel = ({ children }) => {
+  return <div className="full-screen-panel">{children}</div>;
+};
 
 export default Home;

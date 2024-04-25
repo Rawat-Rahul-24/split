@@ -3,11 +3,6 @@ html, body {
     padding: 0 !important;
 }
 
-.split-container {
-    padding: 0%;
-    margin:0%;
-    
-}
 
 .row-change {
     margin-top: 5px;
@@ -53,23 +48,19 @@ html, body {
     box-shadow: 0 0 15px #FF3131;
 }
 
-.table-container {
-    position: relative;
-    display: grid;
-    justify-content: space-around;
-    margin: 0;
-    
-}
 
 .split-container {
-    border: 1px solid black;
+    position: absolute;
+    display: grid;
+    grid-auto-flow: row;
+    justify-content: space-around;
+    border: 1px solid teal;
     margin: 0;
     padding: 0;
-    size: 65px
 }
 
 #main-table {
-    border: 1px solid green;
+    border: 1px solid black;
     margin: 0;
     padding: 0;
 }

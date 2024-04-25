@@ -106,155 +106,147 @@ const SplitScreen = () => {
 
   return (
     <div className="split-container">
-      <div className="table-container">
-        <table id="main-table">
-          <thead id="table-head">
-            <tr className="head-row">
-              <th className="price-heading">Price</th>
-              <th className="p-heading">
-                <input
-                  type="text"
-                  placeholder="Person 1"
-                  className="person-input"
-                />
-              </th>
-              <th className="p-heading">
-                <input
-                  type="text"
-                  placeholder="Person 2"
-                  className="preson-input"
-                />
-              </th>
-              {person.map((n, index) => {
-                return (
-                  <th key={index} className="p-heading">
-                    <input
-                      type="text"
-                      placeholder={n}
-                      className="person-input"
-                    />
-                  </th>
-                );
-              })}
-              <th className="header-button">
-                <button
-                  type="button"
-                  onClick={handleAddPerson}
-                  className="add-button"
-                >
-                  +
-                </button>
-                <div className="person">Person</div>
-                <button
-                  type="button"
-                  onClick={handleRemovePerson}
-                  className="remove-button"
-                >
-                  -
-                </button>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {row.map((item, key) => {
-              let keys = Object.keys(item);
-
+      <table id="main-table">
+        <thead id="table-head">
+          <tr className="head-row">
+            <th className="price-heading">Price</th>
+            <th className="p-heading">
+              <input
+                type="text"
+                placeholder="Person 1"
+                className="person-input"
+              />
+            </th>
+            <th className="p-heading">
+              <input
+                type="text"
+                placeholder="Person 2"
+                className="preson-input"
+              />
+            </th>
+            {person.map((n, index) => {
               return (
-                <tr key={key} className="row">
-                  {keys.map((ele, id) => {
-                    return ele == 0 ? (
-                      <td key={id} className="price-td">
-                        <input
-                          type="text"
-                          onChange={(e) =>
-                            handleInput(
-                              e,
-                              key,
-                              ele,
-                              row,
-                              setRow,
-                              total,
-                              setTotal,
-                              split_history,
-                              setIsValidInput
-                            )
-                          }
-                          placeholder="price"
-                          className={
-                            isValidInput
-                              ? "price-box-valid"
-                              : "price-box-invalid"
-                          }
-                        />
-                        {!isValidInput && showErrorToast()}
-                        <ToastContainer />
-                      </td>
-                    ) : (
-                      <td key={id} className="selection">
-                        <input
-                          type="checkbox"
-                          id={ele}
-                          onChange={() =>
-                            handleSelect(
-                              key,
-                              ele,
-                              row,
-                              setRow,
-                              total,
-                              setTotal,
-                              split_history
-                            )
-                          }
-                          checked={item[ele]}
-                          className="check-input"
-                        />
-                      </td>
-                    );
-                  })}
-                </tr>
+                <th key={index} className="p-heading">
+                  <input type="text" placeholder={n} className="person-input" />
+                </th>
               );
             })}
-            <tr className="footer">
-              {total.map((item, index) => {
-                return index == 0 ? (
-                  <td key={index} className="total-box">
-                    <input
-                      type="text"
-                      value="Total"
-                      readOnly
-                      className="total-input"
-                    />
-                  </td>
-                ) : (
-                  <td key={index}>
-                    <input
-                      type="text"
-                      value={item}
-                      id={item}
-                      readOnly
-                      className="total"
-                    />
-                  </td>
-                );
-              })}
-            </tr>
-          </tbody>
-        </table>
-        <div className="row-change">
-          <button type="button" onClick={handleAddRow} className="add-button">
-            +
-          </button>
-          <p style={{ margin: 0 }} className="row">
-            Row
-          </p>
-          <button
-            type="button"
-            onClick={handleDeleteRow}
-            className="remove-button"
-          >
-            -
-          </button>
-        </div>
+            <th className="header-button">
+              <button
+                type="button"
+                onClick={handleAddPerson}
+                className="add-button"
+              >
+                +
+              </button>
+              <div className="person">Person</div>
+              <button
+                type="button"
+                onClick={handleRemovePerson}
+                className="remove-button"
+              >
+                -
+              </button>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {row.map((item, key) => {
+            let keys = Object.keys(item);
+
+            return (
+              <tr key={key} className="row">
+                {keys.map((ele, id) => {
+                  return ele == 0 ? (
+                    <td key={id} className="price-td">
+                      <input
+                        type="text"
+                        onChange={(e) =>
+                          handleInput(
+                            e,
+                            key,
+                            ele,
+                            row,
+                            setRow,
+                            total,
+                            setTotal,
+                            split_history,
+                            setIsValidInput
+                          )
+                        }
+                        placeholder="price"
+                        className={
+                          isValidInput ? "price-box-valid" : "price-box-invalid"
+                        }
+                      />
+                      {!isValidInput && showErrorToast()}
+                      <ToastContainer />
+                    </td>
+                  ) : (
+                    <td key={id} className="selection">
+                      <input
+                        type="checkbox"
+                        id={ele}
+                        onChange={() =>
+                          handleSelect(
+                            key,
+                            ele,
+                            row,
+                            setRow,
+                            total,
+                            setTotal,
+                            split_history
+                          )
+                        }
+                        checked={item[ele]}
+                        className="check-input"
+                      />
+                    </td>
+                  );
+                })}
+              </tr>
+            );
+          })}
+          <tr className="footer">
+            {total.map((item, index) => {
+              return index == 0 ? (
+                <td key={index} className="total-box">
+                  <input
+                    type="text"
+                    value="Total"
+                    readOnly
+                    className="total-input"
+                  />
+                </td>
+              ) : (
+                <td key={index}>
+                  <input
+                    type="text"
+                    value={item}
+                    id={item}
+                    readOnly
+                    className="total"
+                  />
+                </td>
+              );
+            })}
+          </tr>
+        </tbody>
+      </table>
+      <div className="row-change">
+        <button type="button" onClick={handleAddRow} className="add-button">
+          +
+        </button>
+        <p style={{ margin: 0 }} className="row">
+          Row
+        </p>
+        <button
+          type="button"
+          onClick={handleDeleteRow}
+          className="remove-button"
+        >
+          -
+        </button>
       </div>
     </div>
   );
