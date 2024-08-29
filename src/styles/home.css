@@ -1,29 +1,26 @@
 .home-main {
-    position: relative;
+    /* position: relative; */
     height: 100vh;
     width: 100vw;
     overflow: hidden;
 }
 
 .full-screen-panel {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    min-height: 100%;
+    min-width: calc(100% - 100px);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 0;
-    /* Add a lower z-index than the header */
-}
+    /* z-index: 0; */
+    overflow: auto;
+        /* Add this line */
+    }
+ 
 
 .no-split-screen {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1;
+    /* position: absolute; */
+   
+    /* z-index: 1; */
     /* Set a lower z-index than the header */
     display: flex;
     flex-direction: column;
