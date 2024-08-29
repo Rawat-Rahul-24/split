@@ -50,7 +50,7 @@ html, body {
 
 
 .split-container {
-    position: absolute;
+    /* position: absolute; */
     display: grid;
     grid-auto-flow: row;
     justify-content: space-around;
