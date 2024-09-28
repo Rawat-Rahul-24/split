@@ -9,6 +9,7 @@ import {
 } from "@/utilities/handlers";
 
 import "../styles/splti-screen.css";
+import SplitCard from "./split-card";
 
 const split_history = new Map();
 
@@ -19,6 +20,8 @@ const SplitScreen = () => {
     2: false,
     all: false,
   };
+
+  // const defPerson = ["Person 1", "Person 2"]
 
   const totalFooter = ["Total", 0, 0];
   const [row, setRow] = useState([defItem]);
@@ -106,6 +109,7 @@ const SplitScreen = () => {
 
   return (
     <div className="split-container">
+      {/* <SplitCard row={row} setRow={setRow} person={person} setPerson={setPerson}/> */}
       <table id="main-table">
         <thead id="table-head">
           <tr className="head-row">
