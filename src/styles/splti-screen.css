@@ -4,54 +4,10 @@ html, body {
 }
 
 
-.row-change {
-    margin-top: 5px;
-    margin-left: 5px;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    gap: 10px;
-}
-
-.header-button {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    gap: 10px;
-    max-height: 25px;
-}
-
-.add-button {
-    width: 25px;
-    border-radius: 15%;
-}
-
-.remove-button {
-    width: 25px;
-    border-radius: 15%;
-}
-
-.person {
-    height:25px
-}
-
-.price-box-valid {
-    border: 1px solid #ccc;
-}
-.price-box-invalid {
-    cursor: pointer;
-    border: 1px solid #FF3131;
-}
-.price-box-invalid:focus  {
-    outline: none;
-    border: 1px solid #FF3131;
-    box-shadow: 0 0 15px #FF3131;
-}
-
 
 .split-container {
     /* position: absolute; */
-    display: grid;
+    display: flex;
     grid-auto-flow: row;
     justify-content: space-around;
     border: 1px solid teal;
@@ -59,19 +15,8 @@ html, body {
     padding: 0;
 }
 
-#main-table {
-    border: 1px solid black;
-    margin: 0;
-    padding: 0;
-}
-
-.price-td {
-    position: relative;
-}
-
 .row-change {
-    border: 1px solid green;
-        margin: 0;
-        padding: 0;
+    display: flex;
+    flex-direction: row;
 }
 

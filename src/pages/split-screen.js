@@ -16,18 +16,28 @@ const split_history = new Map();
 const SplitScreen = () => {
   const defItem = {
     0: "",
-    1: false,
+    1: "",
     2: false,
+    3: false,
     all: false,
   };
 
-  // const defPerson = ["Person 1", "Person 2"]
+  const defPerson = ["Person 1", "Person 2"]
 
   const totalFooter = ["Total", 0, 0];
   const [row, setRow] = useState([defItem]);
-  const [person, setPerson] = useState([]);
+  const [person, setPerson] = useState(defPerson);
   const [total, setTotal] = useState([...totalFooter]);
   const [isValidInput, setIsValidInput] = useState(true);
+
+  const showErrorToast = () => {
+    toast.error("Enter prices correctly !", {
+      position: "top-right",
+      autoClose: 3500,
+    });
+  };
+
+
 
   //add a new row
   const handleAddRow = () => {
@@ -58,7 +68,7 @@ const SplitScreen = () => {
   //add a new person
   const handleAddPerson = () => {
     let n = Object.keys(row[0]).length - 1;
-    let p = 3 + person.length;
+    let p = person.length + 1;
     let per = "Person " + p;
 
     row.forEach((item, key) => {
@@ -100,158 +110,88 @@ const SplitScreen = () => {
     }
   };
 
-  const showErrorToast = () => {
-    toast.error("Enter prices correctly !", {
-      position: "top-right",
-      autoClose: 3500,
-    });
-  };
+
+
+  const handlers = {
+    handleAddPerson,
+    handleRemovePerson,
+    handleAddRow,
+    handleDeleteRow,
+  }
 
   return (
     <div className="split-container">
-      {/* <SplitCard row={row} setRow={setRow} person={person} setPerson={setPerson}/> */}
-      <table id="main-table">
-        <thead id="table-head">
-          <tr className="head-row">
-            <th className="price-heading">Price</th>
-            <th className="p-heading">
-              <input
-                type="text"
-                placeholder="Person 1"
-                className="person-input"
-              />
-            </th>
-            <th className="p-heading">
-              <input
-                type="text"
-                placeholder="Person 2"
-                className="preson-input"
-              />
-            </th>
-            {person.map((n, index) => {
-              return (
-                <th key={index} className="p-heading">
-                  <input type="text" placeholder={n} className="person-input" />
-                </th>
-              );
-            })}
-            <th className="header-button">
-              <button
-                type="button"
-                onClick={handleAddPerson}
-                className="add-button"
-              >
-                +
-              </button>
-              <div className="person">Person</div>
-              <button
-                type="button"
-                onClick={handleRemovePerson}
-                className="remove-button"
-              >
-                -
-              </button>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
+      <div className="itemInfo">
+        <div className="item-price">Item/Prices</div>
+        <div>
           {row.map((item, key) => {
             let keys = Object.keys(item);
 
             return (
-              <tr key={key} className="row">
+              <div key={key} className="row">
+                {console.log(keys)}
                 {keys.map((ele, id) => {
-                  return ele == 0 ? (
-                    <td key={id} className="price-td">
-                      <input
-                        type="text"
-                        onChange={(e) =>
-                          handleInput(
-                            e,
-                            key,
-                            ele,
-                            row,
-                            setRow,
-                            total,
-                            setTotal,
-                            split_history,
-                            setIsValidInput
-                          )
-                        }
-                        placeholder="price"
-                        className={
-                          isValidInput ? "price-box-valid" : "price-box-invalid"
-                        }
-                      />
-                      {!isValidInput && showErrorToast()}
-                      <ToastContainer />
-                    </td>
-                  ) : (
-                    <td key={id} className="selection">
-                      <input
-                        type="checkbox"
-                        id={ele}
-                        onChange={() =>
-                          handleSelect(
-                            key,
-                            ele,
-                            row,
-                            setRow,
-                            total,
-                            setTotal,
-                            split_history
-                          )
-                        }
-                        checked={item[ele]}
-                        className="check-input"
-                      />
-                    </td>
-                  );
+                  if (ele == 0) {
+                    return (
+                      <div key={id} className="itemName">
+                        <input
+                          type="text"
+                          placeholder="Item Name"
+                          className="itemInput"
+                        />
+                      </div>
+                    )
+                  } else if (ele == 1) {
+                    return (
+                      <div key={id} className="price-td">
+                        <input
+                          type="text"
+                          onChange={(e) =>
+                            handleInput(
+                              e,
+                              key,
+                              ele,
+                              row,
+                              setRow,
+                              total,
+                              setTotal,
+                              split_history,
+                              setIsValidInput
+                            )
+                          }
+                          placeholder="Price"
+                          className={
+                            isValidInput ? "price-box-valid price-input" : "price-box-invalid price-input"
+                          }
+                        />
+                        {!isValidInput && showErrorToast()}
+                        <ToastContainer />
+                      </div>
+                    );
+                  }
                 })}
-              </tr>
+              </div>
             );
           })}
-          <tr className="footer">
-            {total.map((item, index) => {
-              return index == 0 ? (
-                <td key={index} className="total-box">
-                  <input
-                    type="text"
-                    value="Total"
-                    readOnly
-                    className="total-input"
-                  />
-                </td>
-              ) : (
-                <td key={index}>
-                  <input
-                    type="text"
-                    value={item}
-                    id={item}
-                    readOnly
-                    className="total"
-                  />
-                </td>
-              );
-            })}
-          </tr>
-        </tbody>
-      </table>
-      <div className="row-change">
-        <button type="button" onClick={handleAddRow} className="add-button">
-          +
-        </button>
-        <p style={{ margin: 0 }} className="row">
-          Row
-        </p>
-        <button
-          type="button"
-          onClick={handleDeleteRow}
-          className="remove-button"
-        >
-          -
-        </button>
+        </div>
+        <div className="row-change">
+          <button type="button" onClick={handleAddRow} className="add-button">
+            +
+          </button>
+          <p style={{ margin: 0 }} className="row">
+            Row
+          </p>
+          <button
+            type="button"
+            onClick={handleDeleteRow}
+            className="remove-button"
+          >
+            -
+          </button>
+        </div>
       </div>
+      <SplitCard row={row} setRow={setRow} person={person} setPerson={setPerson} handlers={handlers} total={total}
+        setTotal={setTotal} split_history={split_history} />
     </div>
   );
 };

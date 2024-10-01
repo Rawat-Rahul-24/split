@@ -1,4 +1,122 @@
-.person-div {
+
+
+.header-row {
+    display: flex;
+}
+
+.row {
+    display: flex;
+}
+
+.itemName {
+    text-align: center;
+}
+  
+  /* Styling for Item Name input */
+  .itemName {
+    flex: 1;
+    margin-right: -1px; /* Adjust overlap */
+  }
+  
+  .itemInput {
+    width: auto;
+    padding: 5px;
+    min-width: 10px; /* Minimum size */
+    border: 1px solid #d4cece;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  
+
+  
+  .price-input {
+    width: auto;
+    padding: 5px;
+    min-width: 80px; /* Minimum size */
+    border: 1px solid #ccc;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  
+  /* Styling for person-related inputs */
+  
+  .person-div {
     display: flex;
     flex-direction: row;
+    align-items: center;
+    gap: 5px
+}
+
+.person-div :last-child {
+    background-color: red;
+} 
+
+  .p-heading {
+    
+    width: 180px;
+  }
+
+  .person-input {
+    width: 97%;
+  }
+  
+  /* Styling for buttons and person section */
+  .header-button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 10px;
+  }
+  
+  .add-button,
+  .remove-button {
+    padding: 5px;
+    border: 1px solid #00b6b0;
+    background-color: #fff;
+    cursor: pointer;
+  }
+  
+ 
+  
+  .add-all{
+    text-align: center;
+    width: 100px;
+  }
+
+  .price-selectors {
+    display: flex;
+    flex-basis: auto; /* Prevent parent’s influence on child's width */
+    width: 100%;
+    justify-content: space-around;
+}
+
+.card {
+    display: flex;
+    flex-direction: row;
+}
+
+.card-container {
+    display: flex;
+    flex-direction: column;
+    
+    
+}
+
+.checkbox-row {
+    display: flex;
+    flex-direction: column;
+}
+
+.selection {
+    width: 180px;
+    background-color: green;
+    display: flex;
+    justify-content: center;
+}
+
+.all {
+    width: 100px;
+    background-color: blue;
+    
 }
