@@ -12,17 +12,18 @@ import "../styles/splti-screen.css";
 import SplitCard from "./split-card";
 
 const split_history = new Map();
+const defItem = {
+  0: "",
+  1: "",
+  2: false,
+  3: false,
+  all: false,
+};
+
+const defPerson = ["Person 1", "Person 2"]
 
 const SplitScreen = () => {
-  const defItem = {
-    0: "",
-    1: "",
-    2: false,
-    3: false,
-    all: false,
-  };
-
-  const defPerson = ["Person 1", "Person 2"]
+  
 
   const totalFooter = ["Total", 0, 0];
   const [row, setRow] = useState([defItem]);

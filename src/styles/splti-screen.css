@@ -20,3 +20,7 @@ html, body {
     flex-direction: row;
 }
 
+.item-price {
+    height: 40px;
+    text-align: center;
+}

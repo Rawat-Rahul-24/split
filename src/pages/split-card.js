@@ -30,7 +30,7 @@ function SplitCard({ row, setRow, person, setPerson, handlers, total, setTotal, 
               </div>
             );
           })}
-        <div className="add-all"><p>Add All</p></div>
+          <div className="add-all"><p>Add All</p></div>
         </div>
         <div className="checkbox-row">
           {row.map((item, key) => {
@@ -66,40 +66,25 @@ function SplitCard({ row, setRow, person, setPerson, handlers, total, setTotal, 
               </div>
             )
           })}
+        </div>
 
-          {/* {row.map((item, key) => {
-            let keys = Object.keys(item);
+        <div className="total-row">
+          {total.map((item, index) => {
+            if (index != 0) {
+              return (
+                <div key={index} className="total-single">
+                  <input
+                    type="text"
+                    value={item}
+                    id={item}
+                    readOnly
+                    className="total-input"
+                  />
+                </div>
+              );
+            }
 
-            return (
-              <div className="all-selectors">
-                {keys.map((ele, id) => {
-                  if (ele === "all") {
-                    return (
-                      <div key={id} className="selection">
-                        <input
-                          type="checkbox"
-                          id={ele}
-                          onChange={() =>
-                            handleSelect(
-                              key,
-                              ele,
-                              row,
-                              setRow,
-                              total,
-                              setTotal,
-                              split_history
-                            )
-                          }
-                          checked={item[ele]}
-                          className="check-input"
-                        />
-                      </div>
-                    )
-                  }
-                })}
-              </div>
-            )
-          })} */}
+          })}
         </div>
       </div>
       <div className="header-button">
