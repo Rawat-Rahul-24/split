@@ -24,3 +24,18 @@ html, body {
     height: 40px;
     text-align: center;
 }
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.total-final {
+    width: 170px;
+    margin-right: 3px;
+}
+
+.final-total-input {
+    width: 97%;
+    border-radius: 5px;
+}

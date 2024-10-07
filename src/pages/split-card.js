@@ -7,10 +7,6 @@ import {
   clear_total_on_row_delete,
 } from "@/utilities/handlers";
 
-import {
-  handleAddPerson,
-  handleRemovePerson,
-} from "@/pages/split-screen"
 
 import "../styles/split-card.css";
 

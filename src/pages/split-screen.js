@@ -23,9 +23,9 @@ const defItem = {
 const defPerson = ["Person 1", "Person 2"]
 
 const SplitScreen = () => {
-  
 
-  const totalFooter = ["Total", 0, 0];
+
+  const totalFooter = [0, 0, 0];
   const [row, setRow] = useState([defItem]);
   const [person, setPerson] = useState(defPerson);
   const [total, setTotal] = useState([...totalFooter]);
@@ -175,20 +175,40 @@ const SplitScreen = () => {
             );
           })}
         </div>
-        <div className="row-change">
-          <button type="button" onClick={handleAddRow} className="add-button">
-            +
-          </button>
-          <p style={{ margin: 0 }} className="row">
-            Row
-          </p>
-          <button
-            type="button"
-            onClick={handleDeleteRow}
-            className="remove-button"
-          >
-            -
-          </button>
+        <div className="footer">
+          <div className="row-change">
+            <button type="button" onClick={handleAddRow} className="add-button">
+              +
+            </button>
+            <p style={{ margin: 0 }} className="row">
+              Row
+            </p>
+            <button
+              type="button"
+              onClick={handleDeleteRow}
+              className="remove-button"
+            >
+              -
+            </button>
+          </div>
+          {/* <div>
+            {total.map((item, index) => {
+              if (index === 0) {
+                return (
+                  <div key={index} className="total-final">
+                    <input
+                      type="number"
+                      value={item}
+                      id={item}
+                      readOnly
+                      className="final-total-input"
+                    />
+                  </div>
+                );
+              }
+
+            })}
+          </div> */}
         </div>
       </div>
       <SplitCard row={row} setRow={setRow} person={person} setPerson={setPerson} handlers={handlers} total={total}
