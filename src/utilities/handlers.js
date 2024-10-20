@@ -61,24 +61,41 @@ export const handleInput = (
   total,
   setTotal,
   split_history,
-  setIsValidInput
+  setIsValidInput,
+  prices,
+  setPrices
 ) => {
   const updatedRow = [...row];
-  const val = +e.target.value;
-  console.log(val);
+  let val = e.target.value;
+  console.log("key and ele are ", key, ele)
+  // If the value starts with a decimal, add a leading '0'
+  if (val != null && val.startsWith('.')) {
+    val = '0' + val;
+  }
+
+  if (val != null && val.endsWith('.')) {
+    updatePrice(key, val, prices, setPrices)
+    return
+  }
+
+  // If the value is a whole number without leading zeros, leave it as is
+  // Prevent multiple leading zeros like 0002
+  if (val != null && /^0\d+/.test(val)) {
+    val = val.replace(/^0+/, '');
+  }
+  
   const regex = /^\d+(\.\d{1,2})?$/;
 
-  if ((val != "" && !val) || !regex.test(val)) {
+  if (val != ""  && !regex.test(val)) {
     setIsValidInput(false);
     return;
   }
-  setIsValidInput(true);
-  const changeVal =
-    e.target.value > updatedRow[key][ele]
-      ? e.target.value
-      : Math.abs(e.target.value - updatedRow[key][ele]);
-  updatedRow[key][ele] = e.target.value;
 
+  console.log(val);
+  setIsValidInput(true);
+  updatedRow[key]["1"] = val
+  console.log("row item updated ", updatedRow);
+  
   const priceUpdatedRow = getPriceCalculation(
     key,
     updatedRow,
@@ -87,9 +104,10 @@ export const handleInput = (
     null,
     split_history
   );
-  console.log(priceUpdatedRow);
+  updatePrice(key, val, prices, setPrices, priceUpdatedRow, setTotal)
+
   setRow([...updatedRow]);
-  setTotal([...priceUpdatedRow]);
+  
 };
 
 function getPriceCalculation(
@@ -292,3 +310,23 @@ export const clear_total_on_row_delete = (
   console.log(priceUpdatedRow);
   setTotal([...priceUpdatedRow]);
 };
+
+
+function updatePrice (key, val, prices, setPrices, priceUpdatedRow, setTotal) {
+  //update the prices and handle decimals
+  const updatedPrices = [...prices];
+  updatedPrices[key] = val || 0; // Update the specific price
+  console.log(updatedPrices);
+  
+  setPrices(updatedPrices);
+
+  //update the totals dynamically with each price change event
+  if (priceUpdatedRow != undefined) {
+    const newTotal = updatedPrices.reduce((acc, curr) => acc + curr, 0);
+    priceUpdatedRow[0] = parseFloat(newTotal)
+  
+    console.log("totals updated", priceUpdatedRow);
+    setTotal([...priceUpdatedRow]);
+  }
+
+}

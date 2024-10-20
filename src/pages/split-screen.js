@@ -30,6 +30,7 @@ const SplitScreen = () => {
   const [person, setPerson] = useState(defPerson);
   const [total, setTotal] = useState([...totalFooter]);
   const [isValidInput, setIsValidInput] = useState(true);
+  const [prices, setPrices] = useState([0])
 
   const showErrorToast = () => {
     toast.error("Enter prices correctly !", {
@@ -127,7 +128,8 @@ const SplitScreen = () => {
         <div>
           {row.map((item, key) => {
             let keys = Object.keys(item);
-
+            console.log(item);
+            
             return (
               <div key={key} className="row">
                 {console.log(keys)}
@@ -147,6 +149,7 @@ const SplitScreen = () => {
                       <div key={id} className="price-td">
                         <input
                           type="text"
+                          value={prices[key]}
                           onChange={(e) =>
                             handleInput(
                               e,
@@ -157,7 +160,9 @@ const SplitScreen = () => {
                               total,
                               setTotal,
                               split_history,
-                              setIsValidInput
+                              setIsValidInput,
+                              prices,
+                              setPrices
                             )
                           }
                           placeholder="Price"
@@ -191,7 +196,7 @@ const SplitScreen = () => {
               -
             </button>
           </div>
-          {/* <div>
+          <div>
             {total.map((item, index) => {
               if (index === 0) {
                 return (
@@ -208,7 +213,7 @@ const SplitScreen = () => {
               }
 
             })}
-          </div> */}
+          </div>
         </div>
       </div>
       <SplitCard row={row} setRow={setRow} person={person} setPerson={setPerson} handlers={handlers} total={total}
