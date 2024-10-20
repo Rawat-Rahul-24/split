@@ -24,11 +24,14 @@ export const handleSelect = (
     split_history
   );
 
-  if (ele === "all" || allSelected) {
-    const currValue = updatedRow[key][ele];
+  if (ele === "all" || allSelected) {    
+    const currValue = updatedRow[key][ele];    
     const newItem = Object.entries(updatedRow[key]);
+    console.log("new item ",newItem);
+    
     newItem.forEach((item, index) => {
-      if (index != 0) {
+
+      if (index != 0 && index != 1) {
         if (!currValue) {
           item[1] = true;
         } else {
@@ -58,24 +61,41 @@ export const handleInput = (
   total,
   setTotal,
   split_history,
-  setIsValidInput
+  setIsValidInput,
+  prices,
+  setPrices
 ) => {
   const updatedRow = [...row];
-  const val = +e.target.value;
-  console.log(val);
+  let val = e.target.value;
+  console.log("key and ele are ", key, ele)
+  // If the value starts with a decimal, add a leading '0'
+  if (val != null && val.startsWith('.')) {
+    val = '0' + val;
+  }
+
+  if (val != null && val.endsWith('.')) {
+    updatePrice(key, val, prices, setPrices)
+    return
+  }
+
+  // If the value is a whole number without leading zeros, leave it as is
+  // Prevent multiple leading zeros like 0002
+  if (val != null && /^0\d+/.test(val)) {
+    val = val.replace(/^0+/, '');
+  }
+  
   const regex = /^\d+(\.\d{1,2})?$/;
 
-  if ((val != "" && !val) || !regex.test(val)) {
+  if (val != ""  && !regex.test(val)) {
     setIsValidInput(false);
     return;
   }
-  setIsValidInput(true);
-  const changeVal =
-    e.target.value > updatedRow[key][ele]
-      ? e.target.value
-      : Math.abs(e.target.value - updatedRow[key][ele]);
-  updatedRow[key][ele] = e.target.value;
 
+  console.log(val);
+  setIsValidInput(true);
+  updatedRow[key]["1"] = val
+  console.log("row item updated ", updatedRow);
+  
   const priceUpdatedRow = getPriceCalculation(
     key,
     updatedRow,
@@ -84,9 +104,10 @@ export const handleInput = (
     null,
     split_history
   );
-  console.log(priceUpdatedRow);
+  updatePrice(key, val, prices, setPrices, priceUpdatedRow, setTotal)
+
   setRow([...updatedRow]);
-  setTotal([...priceUpdatedRow]);
+  
 };
 
 function getPriceCalculation(
@@ -98,6 +119,8 @@ function getPriceCalculation(
   split_history
 ) {
   if (updatedRow[key] != 0 || updatedRow[key] != "") {
+    console.log("calculating prices, row selected", key, " element selected", ele, "current value ", currVal);
+    
     updateTotals(key, total, updatedRow, currVal, ele, split_history);
   }
   console.log(total);
@@ -106,12 +129,16 @@ function getPriceCalculation(
 
 function updateTotals(key, total, updatedRow, currVal, ele, split_history) {
   const item = updatedRow[key];
-  const price = item["0"];
+  console.log("item ", item);
+  
+  const price = item["1"];
   let share = 0;
   const history_obj = {};
   //if all element is selected divide the price for all
   if (ele === "all") {
-    share = divideIntoEqualParts(price, Object.keys(item).length - 2);
+    console.log("all persons selected for splitting price");
+    
+    share = divideIntoEqualParts(price, Object.keys(item).length - 3);
 
     // add the share to all people if  the "all" element is checked
     if (currVal == true) {
@@ -139,6 +166,7 @@ function updateTotals(key, total, updatedRow, currVal, ele, split_history) {
         clear_split_history(split_history, key);
         clear_total(total, prev_history);
       }
+      total[0] -= Number(price);
     }
     console.log(total);
   } else {
@@ -165,13 +193,13 @@ function updateTotals(key, total, updatedRow, currVal, ele, split_history) {
       );
       count.forEach((p, index) => {
         if (item[p] === true) {
-          total[p] += share[index];
-          history_obj[p] = share[index];
+          total[p - 1] += share[index];
+          history_obj[p - 1] = share[index];
         }
       });
       if (ele != undefined) {
-        total[ele] += share[share.length - 1];
-        history_obj[ele] = share[share.length - 1];
+        total[ele - 1] += share[share.length - 1];
+        history_obj[ele - 1] = share[share.length - 1];
       }
 
       split_history.set(key, history_obj);
@@ -183,8 +211,8 @@ function updateTotals(key, total, updatedRow, currVal, ele, split_history) {
       let k = 0;
       count.forEach((p, index) => {
         if (item[p] === true && p != ele) {
-          total[p] += share[k];
-          history_obj[p] = share[k];
+          total[p - 1] += share[k];
+          history_obj[p - 1] = share[k];
           k++;
         }
       });
@@ -197,6 +225,8 @@ function divideIntoEqualParts(number, parts) {
   if (parts == 0) {
     return Array.from({ length: 1 }, () => number);
   }
+  console.log("diving price ", number, " into ", parts, " parts");
+  
   const result = number / parts;
   const partValue = parseFloat((Math.floor(result * 100) / 100).toFixed(2));
   // Calculate part value with two decimal places
@@ -280,3 +310,23 @@ export const clear_total_on_row_delete = (
   console.log(priceUpdatedRow);
   setTotal([...priceUpdatedRow]);
 };
+
+
+function updatePrice (key, val, prices, setPrices, priceUpdatedRow, setTotal) {
+  //update the prices and handle decimals
+  const updatedPrices = [...prices];
+  updatedPrices[key] = val || 0; // Update the specific price
+  console.log(updatedPrices);
+  
+  setPrices(updatedPrices);
+
+  //update the totals dynamically with each price change event
+  if (priceUpdatedRow != undefined) {
+    const newTotal = updatedPrices.reduce((acc, curr) => acc + curr, 0);
+    priceUpdatedRow[0] = parseFloat(newTotal)
+  
+    console.log("totals updated", priceUpdatedRow);
+    setTotal([...priceUpdatedRow]);
+  }
+
+}
