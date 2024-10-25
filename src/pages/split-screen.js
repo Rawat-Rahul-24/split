@@ -10,6 +10,7 @@ import {
 
 import "../styles/splti-screen.css";
 import SplitCard from "./split-card";
+import { useRef } from "react";
 
 const split_history = new Map();
 const defItem = {
@@ -89,6 +90,7 @@ const SplitScreen = () => {
     setRow([...updatedRow]);
     setPerson([...person, per]);
     console.log(total);
+    // scrollRight();
   };
 
   //remove the last person
@@ -121,6 +123,57 @@ const SplitScreen = () => {
     handleDeleteRow,
   }
 
+  //split card limit to 5 and its handling
+  const [showArrows, setShowArrows] = useState(false);
+  const splitCardRef = useRef(null);
+
+  useEffect(() => {
+    if (person.length > 4) {
+      setShowArrows(true); // Show arrows only if more than 5 persons
+      scrollToRight()
+    } else {
+      setShowArrows(false)
+    }
+  }, [person]);
+
+  const scrollLeft = () => {
+    if (splitCardRef.current) {
+      splitCardRef.current.scrollBy({
+        left: -185.73, // Adjust based on column width
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  const scrollToLeft = () => {
+    if (splitCardRef.current) {
+      splitCardRef.current.scrollTo({
+        left: 0,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  const scrollRight = () => {
+    console.log("scrolling right");
+    
+    if (splitCardRef.current) {
+      splitCardRef.current.scrollBy({
+        left: 185.43, // Adjust based on column width
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  const scrollToRight = () => {
+    if (splitCardRef.current) {
+      splitCardRef.current.scrollTo({
+        left: splitCardRef.current.scrollWidth, // Scroll to the end
+        behavior: 'smooth',
+      });
+    }
+  };
+
   return (
     <div className="split-container">
       <div className="itemInfo">
@@ -129,7 +182,7 @@ const SplitScreen = () => {
           {row.map((item, key) => {
             let keys = Object.keys(item);
             console.log(item);
-            
+
             return (
               <div key={key} className="row">
                 {console.log(keys)}
@@ -216,8 +269,67 @@ const SplitScreen = () => {
           </div>
         </div>
       </div>
-      <SplitCard row={row} setRow={setRow} person={person} setPerson={setPerson} handlers={handlers} total={total}
-        setTotal={setTotal} split_history={split_history} />
+      <button className={`arrow left-arrow ${showArrows ? 'show' : 'hide'}`} onClick={scrollLeft} onDoubleClick={scrollToLeft}>{"<"}</button>
+      <div className={`split-card ${showArrows ? 'split-card-scrollable' : ''}`} ref={splitCardRef}>
+        <SplitCard row={row} setRow={setRow} person={person} setPerson={setPerson} handlers={handlers} total={total}
+          setTotal={setTotal} split_history={split_history} />
+      </div>
+      <button className={`arrow right-arrow ${showArrows ? 'show' : 'hide'}`} onClick={scrollRight}  onDoubleClick={scrollToRight}>{">"}</button>
+      <div className="add-all-container">
+        <div className="add-all-text"> <p> Add All</p></div>
+        <div className="add-all-selector">
+          {row.map((item, key) => {
+                let keys = Object.keys(item);
+                return (
+                  <div className="price-selectors">
+                    {keys.map((ele, id) => {
+                      if (ele === "all") {
+                        return (
+                          <div key={id} className={`selection ${ele === "all" ? "all" : ""}`}>
+                            <input
+                              type="checkbox"
+                              id={ele}
+                              onChange={() =>
+                                handleSelect(
+                                  key,
+                                  ele,
+                                  row,
+                                  setRow,
+                                  total,
+                                  setTotal,
+                                  split_history
+                                )
+                              }
+                              checked={item[ele]}
+                              className="check-input"
+                            />
+                          </div>
+                        )
+                      }
+                    })}
+                  </div>
+                )
+              })}
+
+        </div>
+      </div>
+      <div className="header-button">
+        <button
+          type="button"
+          onClick={handlers.handleAddPerson}
+          className="add-button"
+        >
+          +
+        </button>
+        <div className="person">Person</div>
+        <button
+          type="button"
+          onClick={handlers.handleRemovePerson}
+          className="remove-button"
+        >
+          -
+        </button>
+      </div>
     </div>
   );
 };

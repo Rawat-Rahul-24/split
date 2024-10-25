@@ -26,7 +26,6 @@ function SplitCard({ row, setRow, person, setPerson, handlers, total, setTotal, 
               </div>
             );
           })}
-          <div className="add-all"><p>Add All</p></div>
         </div>
         <div className="checkbox-row">
           {row.map((item, key) => {
@@ -35,7 +34,7 @@ function SplitCard({ row, setRow, person, setPerson, handlers, total, setTotal, 
             return (
               <div className="price-selectors">
                 {keys.map((ele, id) => {
-                  if (ele > 1 || ele === "all") {
+                  if (ele > 1) {
                     return (
                       <div key={id} className={`selection ${ele === "all" ? "all" : ""}`}>
                         <input
@@ -82,23 +81,6 @@ function SplitCard({ row, setRow, person, setPerson, handlers, total, setTotal, 
 
           })}
         </div>
-      </div>
-      <div className="header-button">
-        <button
-          type="button"
-          onClick={handlers.handleAddPerson}
-          className="add-button"
-        >
-          +
-        </button>
-        <div className="person">Person</div>
-        <button
-          type="button"
-          onClick={handlers.handleRemovePerson}
-          className="remove-button"
-        >
-          -
-        </button>
       </div>
     </div>
 
