@@ -56,6 +56,15 @@
     width: 97%;
     height: 22px;
     border-radius: 5px;
+    border: 1px solid #dcdfe3;
+    outline: none;
+    font-size: 0.9rem;
+    transition: border-color 0.3s ease;
+  }
+
+  .person-input:focus {
+    border-color: #7aafff;
+    box-shadow: 0 0 4px rgba(122, 175, 255, 0.3);
   }
   
   /* Styling for buttons and person section */
