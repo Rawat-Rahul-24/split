@@ -22,23 +22,50 @@ const defItem = {
 };
 
 const defPerson = ["Person 1", "Person 2"]
+const totalFooter = [0, 0, 0];
 
-const SplitScreen = () => {
+const SplitScreen = ({item, people}) => {
+  
+  const [row, setRow] = useState([]);
+  const [person, setPerson] = useState([]);
+  const [total, setTotal] = useState([]);
+  const [prices, setPrices] = useState([])
+  const [isSplitComplete, setIsSplitComplete] = useState(false)
+  useEffect(() => {
+    console.log(item, people);
+    const initialPeople = [...defPerson]
+    const initialFooter = [...totalFooter]
+    let n = 3
+    for(let i=0;i<people-2;i++) {
+      initialPeople[i+2] = "Person" + n
+      defItem[i+4] = false
+      initialFooter[i+3] = 0
+      n++;
+    }
+    // console.log(initialPeople);
+    // console.log(defItem);
+    // console.log(initialFooter);
 
+    const initialItems = Array.from({ length: item }, () => ({ ...defItem }));
 
-  const totalFooter = [0, 0, 0];
-  const [row, setRow] = useState([defItem]);
-  const [person, setPerson] = useState(defPerson);
-  const [total, setTotal] = useState([...totalFooter]);
+    const initialPrices = Array.from({length: people}, () => (null))
+
+    setRow(initialItems);
+    setPerson(initialPeople);
+    setTotal([...initialFooter])
+    setPrices(initialPrices)
+  }, [item, people]);
+  
+  
+  
   const [isValidInput, setIsValidInput] = useState(true);
-  const [prices, setPrices] = useState([0])
 
-  const showErrorToast = () => {
-    toast.error("Enter prices correctly !", {
-      position: "top-right",
-      autoClose: 3500,
-    });
-  };
+  // const showErrorToast = () => {
+  //   toast.error("Enter prices correctly !", {
+  //     position: "top-right",
+  //     autoClose: 3500,
+  //   });
+  // };
 
 
 
@@ -48,6 +75,13 @@ const SplitScreen = () => {
     newItem.forEach((item, index) => {
       if (item[1] === true) {
         item[1] = false;
+      }
+      if (index == 1) {
+        item[1] = 0;
+      }
+
+      if (index == 0) {
+        item[1] =""
       }
     });
     setRow([...row, Object.fromEntries(newItem)]);
@@ -85,11 +119,11 @@ const SplitScreen = () => {
     total.push(0);
     setTotal(total);
 
-    console.log(row);
+    // console.log(row);
     const updatedRow = [...row];
     setRow([...updatedRow]);
     setPerson([...person, per]);
-    console.log(total);
+    // console.log(total);
     // scrollRight();
   };
 
@@ -99,14 +133,14 @@ const SplitScreen = () => {
 
     if (n > 2) {
       row.map((item, key) => {
-        console.log(item, n);
+        // console.log(item, n);
         delete item[n];
-        console.log(item);
+        // console.log(item);
       });
 
       total.pop();
       setTotal(total);
-      console.log(row);
+      // console.log(row);
       const updatedRow = [...row];
       setRow([...updatedRow]);
       person.pop();
@@ -155,7 +189,7 @@ const SplitScreen = () => {
   };
 
   const scrollRight = () => {
-    console.log("scrolling right");
+    // console.log("scrolling right");
     
     if (splitCardRef.current) {
       splitCardRef.current.scrollBy({
@@ -181,11 +215,11 @@ const SplitScreen = () => {
         <div>
           {row.map((item, key) => {
             let keys = Object.keys(item);
-            console.log(item);
+            // console.log(item);
 
             return (
               <div key={key} className="row">
-                {console.log(keys)}
+                {/* {console.log(keys)} */}
                 {keys.map((ele, id) => {
                   if (ele == 0) {
                     return (
@@ -201,7 +235,7 @@ const SplitScreen = () => {
                     return (
                       <div key={id} className="price-td">
                         <input
-                          type="text"
+                          type="number"
                           value={prices[key]}
                           onChange={(e) =>
                             handleInput(
@@ -215,7 +249,8 @@ const SplitScreen = () => {
                               split_history,
                               setIsValidInput,
                               prices,
-                              setPrices
+                              setPrices,
+                              setIsSplitComplete
                             )
                           }
                           placeholder="Price"
@@ -223,8 +258,8 @@ const SplitScreen = () => {
                             isValidInput ? "price-box-valid price-input" : "price-box-invalid price-input"
                           }
                         />
-                        {!isValidInput && showErrorToast()}
-                        <ToastContainer />
+                        {/* {!isValidInput && showErrorToast()}
+                        <ToastContainer /> */}
                       </div>
                     );
                   }
@@ -251,6 +286,8 @@ const SplitScreen = () => {
           </div>
           <div>
             {total.map((item, index) => {
+              console.log("is split complete for now", isSplitComplete);
+              
               if (index === 0) {
                 return (
                   <div key={index} className="total-final">
@@ -259,7 +296,7 @@ const SplitScreen = () => {
                       value={item}
                       id={item}
                       readOnly
-                      className="final-total-input"
+                      className={`total-input ${!isSplitComplete ? 'incomplete-split': ''}`}
                     />
                   </div>
                 );
@@ -272,7 +309,7 @@ const SplitScreen = () => {
       <button className={`arrow left-arrow ${showArrows ? 'show' : 'hide'}`} onClick={scrollLeft} onDoubleClick={scrollToLeft}>{"<"}</button>
       <div className={`split-card ${showArrows ? 'split-card-scrollable' : ''}`} ref={splitCardRef}>
         <SplitCard row={row} setRow={setRow} person={person} setPerson={setPerson} handlers={handlers} total={total}
-          setTotal={setTotal} split_history={split_history} />
+          setTotal={setTotal} split_history={split_history} prices={prices} setPrices={setPrices} setIsSplitComplete={setIsSplitComplete}/>
       </div>
       <button className={`arrow right-arrow ${showArrows ? 'show' : 'hide'}`} onClick={scrollRight}  onDoubleClick={scrollToRight}>{">"}</button>
       <div className="add-all-container">
@@ -297,7 +334,10 @@ const SplitScreen = () => {
                                   setRow,
                                   total,
                                   setTotal,
-                                  split_history
+                                  split_history,
+                                  prices,
+                                  setPrices,
+                                  setIsSplitComplete
                                 )
                               }
                               checked={item[ele]}

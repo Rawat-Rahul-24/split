@@ -3,16 +3,14 @@ import { useState } from "react";
 
 import {
   handleSelect,
-  handleInput,
-  clear_total_on_row_delete,
 } from "@/utilities/handlers";
 
 
 import "../styles/split-card.css";
 
-function SplitCard({ row, setRow, person, setPerson, handlers, total, setTotal, split_history }) {
+function SplitCard({ row, setRow, person, setPerson, handlers, total, setTotal, split_history, prices, setPrices, setIsSplitComplete }) {
 
-  console.log(row, person);
+  // console.log(row, person);
 
 
   return (
@@ -48,7 +46,10 @@ function SplitCard({ row, setRow, person, setPerson, handlers, total, setTotal, 
                               setRow,
                               total,
                               setTotal,
-                              split_history
+                              split_history,
+                              prices,
+                              setPrices,
+                              setIsSplitComplete
                             )
                           }
                           checked={item[ele]}

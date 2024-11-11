@@ -38,7 +38,7 @@ html, body {
     margin-right: 3px;
 }
 
-.final-total-input {
+.total-input {
     width: 97%;
     border-radius: 5px;
 }
@@ -134,4 +134,13 @@ html, body {
       width: 25px;
       height: 25px;
     }
+  }
+
+  .incomplete-split {
+    border-color: red;
+    outline: none; 
+  }
+
+  .incomplete-split:focus {
+    border-color: red;
   }

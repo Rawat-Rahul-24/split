@@ -5,16 +5,21 @@ export const handleSelect = (
   setRow,
   total,
   setTotal,
-  split_history
+  split_history,
+  prices,
+  setPrices,
+  setIsSplitComplete
 ) => {
   const updatedRow = [...row];
   let allSelected = false;
   const currVal = !row[key][ele];
   let currEle = ele;
+  //if all people are selected
   if (checkIfAllElementsSelected(updatedRow[key], ele)) {
     currEle = "all";
     allSelected = true;
   }
+
   const priceUpdatedRow = getPriceCalculation(
     key,
     updatedRow,
@@ -27,7 +32,7 @@ export const handleSelect = (
   if (ele === "all" || allSelected) {    
     const currValue = updatedRow[key][ele];    
     const newItem = Object.entries(updatedRow[key]);
-    console.log("new item ",newItem);
+    // console.log("new item ",newItem);
     
     newItem.forEach((item, index) => {
 
@@ -47,8 +52,9 @@ export const handleSelect = (
     }
     updatedRow[key][ele] = !updatedRow[key][ele];
   }
-  console.log(updatedRow);
+  // console.log(updatedRow);
   setRow([...updatedRow]);
+  updatePrice(key, updatedRow[key][1], prices,  setPrices, priceUpdatedRow, setTotal, setIsSplitComplete);
   setTotal([...priceUpdatedRow]);
 };
 
@@ -63,7 +69,8 @@ export const handleInput = (
   split_history,
   setIsValidInput,
   prices,
-  setPrices
+  setPrices,
+  setIsSplitComplete
 ) => {
   const updatedRow = [...row];
   let val = e.target.value;
@@ -74,7 +81,7 @@ export const handleInput = (
   }
 
   if (val != null && val.endsWith('.')) {
-    updatePrice(key, val, prices, setPrices)
+    updatePrice(key, parseInt(val, 10), prices, setPrices, setIsSplitComplete)
     return
   }
 
@@ -91,10 +98,10 @@ export const handleInput = (
     return;
   }
 
-  console.log(val);
+  console.log("current price value is", val);
   setIsValidInput(true);
-  updatedRow[key]["1"] = val
-  console.log("row item updated ", updatedRow);
+  updatedRow[key]["1"] = parseInt(val, 10)
+  // console.log("row item updated ", updatedRow);
   
   const priceUpdatedRow = getPriceCalculation(
     key,
@@ -104,7 +111,7 @@ export const handleInput = (
     null,
     split_history
   );
-  updatePrice(key, val, prices, setPrices, priceUpdatedRow, setTotal)
+  updatePrice(key, parseInt(val, 10), prices, setPrices, priceUpdatedRow, setTotal, setIsSplitComplete)
 
   setRow([...updatedRow]);
   
@@ -119,7 +126,7 @@ function getPriceCalculation(
   split_history
 ) {
   if (updatedRow[key] != 0 || updatedRow[key] != "") {
-    console.log("calculating prices, row selected", key, " element selected", ele, "current value ", currVal);
+    // console.log("calculating prices, row selected", key, " element selected", ele, "current value ", currVal);
     
     updateTotals(key, total, updatedRow, currVal, ele, split_history);
   }
@@ -129,14 +136,14 @@ function getPriceCalculation(
 
 function updateTotals(key, total, updatedRow, currVal, ele, split_history) {
   const item = updatedRow[key];
-  console.log("item ", item);
+  // console.log("item ", item);
   
   const price = item["1"];
   let share = 0;
   const history_obj = {};
   //if all element is selected divide the price for all
   if (ele === "all") {
-    console.log("all persons selected for splitting price");
+    // console.log("all persons selected for splitting price");
     
     share = divideIntoEqualParts(price, Object.keys(item).length - 3);
 
@@ -166,9 +173,9 @@ function updateTotals(key, total, updatedRow, currVal, ele, split_history) {
         clear_split_history(split_history, key);
         clear_total(total, prev_history);
       }
-      total[0] -= Number(price);
+      // total[0] -= Number(price);
     }
-    console.log(total);
+    // console.log(total);
   } else {
     //following will work if one or more people are selected for splitting the bill
     let count = []; //contains counts of current people selected for splitting
@@ -177,7 +184,7 @@ function updateTotals(key, total, updatedRow, currVal, ele, split_history) {
         count.push(key);
       }
     }
-    console.log(count);
+    // console.log(count);
     const prev_history = split_history.get(key);
     clear_split_history(split_history, key);
     if (currVal === true) {
@@ -203,7 +210,7 @@ function updateTotals(key, total, updatedRow, currVal, ele, split_history) {
       }
 
       split_history.set(key, history_obj);
-      console.log(split_history);
+      // console.log(split_history);
     } else {
       clear_total(total, prev_history);
 
@@ -225,7 +232,7 @@ function divideIntoEqualParts(number, parts) {
   if (parts == 0) {
     return Array.from({ length: 1 }, () => number);
   }
-  console.log("diving price ", number, " into ", parts, " parts");
+  // console.log("diving price ", number, " into ", parts, " parts");
   
   const result = number / parts;
   const partValue = parseFloat((Math.floor(result * 100) / 100).toFixed(2));
@@ -251,6 +258,8 @@ function divideIntoEqualParts(number, parts) {
 
 //function to clear the total array of the previous iteration
 function clear_total(total, prev_history) {
+  // console.log("clearing the previos total before doing the new split");
+  
   total.forEach((p, index) => {
     if (index != 0 && prev_history[index] != undefined) {
       p = parseFloat(p - prev_history[index]).toFixed(2);
@@ -274,7 +283,7 @@ function checkIfAllElementsSelected(item, ele) {
   let item_copy = { ...item };
   item_copy[ele] = !item_copy[ele];
   const values = Object.values(item_copy).slice(
-    1,
+    2,
     Object.keys(item_copy).length - 1
   );
 
@@ -307,26 +316,36 @@ export const clear_total_on_row_delete = (
     "all",
     split_history
   );
-  console.log(priceUpdatedRow);
+  // console.log(priceUpdatedRow);
   setTotal([...priceUpdatedRow]);
 };
 
 
-function updatePrice (key, val, prices, setPrices, priceUpdatedRow, setTotal) {
+function updatePrice (key, val, prices, setPrices, priceUpdatedRow, setTotal, setIsSplitComplete) {
   //update the prices and handle decimals
-  const updatedPrices = [...prices];
-  updatedPrices[key] = val || 0; // Update the specific price
-  console.log(updatedPrices);
+  console.log("updating prices and total prices sum");
   
-  setPrices(updatedPrices);
+  if (prices != undefined) {
+    const updatedPrices = [...prices];
+    updatedPrices[key] = val || 0; // Update the specific price
+    console.log("updated prices",updatedPrices);
+    setPrices(updatedPrices);
 
-  //update the totals dynamically with each price change event
-  if (priceUpdatedRow != undefined) {
-    const newTotal = updatedPrices.reduce((acc, curr) => acc + curr, 0);
-    priceUpdatedRow[0] = parseFloat(newTotal)
-  
-    console.log("totals updated", priceUpdatedRow);
-    setTotal([...priceUpdatedRow]);
+    //update the totals dynamically with each price change event
+    if (priceUpdatedRow != undefined) {
+      const newTotal = updatedPrices.reduce((acc, curr) => acc + curr, 0);
+      priceUpdatedRow[0] = newTotal < 0 ? 0 : parseFloat(newTotal)
+    
+      console.log("totals updated", priceUpdatedRow);
+      const splitTotal = priceUpdatedRow.reduce((acc, curr) => acc + curr, 0) - priceUpdatedRow[0]
+      if (splitTotal == priceUpdatedRow[0]) {
+        setIsSplitComplete(true)
+      } else {
+        setIsSplitComplete(false)
+      }
+      setTotal([...priceUpdatedRow]);
+    }
   }
+
 
 }
