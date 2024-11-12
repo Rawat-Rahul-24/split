@@ -81,7 +81,7 @@ export const handleInput = (
   }
 
   if (val != null && val.endsWith('.')) {
-    updatePrice(key, parseInt(val, 10), prices, setPrices, setIsSplitComplete)
+    updatePrice(key, val, prices, setPrices, [...total], setTotal, setIsSplitComplete)
     return
   }
 
@@ -100,7 +100,7 @@ export const handleInput = (
 
   console.log("current price value is", val);
   setIsValidInput(true);
-  updatedRow[key]["1"] = parseInt(val, 10)
+  updatedRow[key]["1"] = parseFloat(val)
   // console.log("row item updated ", updatedRow);
   
   const priceUpdatedRow = getPriceCalculation(
@@ -111,7 +111,7 @@ export const handleInput = (
     null,
     split_history
   );
-  updatePrice(key, parseInt(val, 10), prices, setPrices, priceUpdatedRow, setTotal, setIsSplitComplete)
+  updatePrice(key, val, prices, setPrices, priceUpdatedRow, setTotal, setIsSplitComplete)
 
   setRow([...updatedRow]);
   
@@ -130,7 +130,7 @@ function getPriceCalculation(
     
     updateTotals(key, total, updatedRow, currVal, ele, split_history);
   }
-  console.log(total);
+  // console.log(total);
   return total;
 }
 
@@ -323,21 +323,22 @@ export const clear_total_on_row_delete = (
 
 function updatePrice (key, val, prices, setPrices, priceUpdatedRow, setTotal, setIsSplitComplete) {
   //update the prices and handle decimals
-  console.log("updating prices and total prices sum");
+  // console.log("updating prices and total prices sum");
   
   if (prices != undefined) {
     const updatedPrices = [...prices];
     updatedPrices[key] = val || 0; // Update the specific price
-    console.log("updated prices",updatedPrices);
+    // console.log("updated prices",updatedPrices);
     setPrices(updatedPrices);
 
     //update the totals dynamically with each price change event
     if (priceUpdatedRow != undefined) {
-      const newTotal = updatedPrices.reduce((acc, curr) => acc + curr, 0);
-      priceUpdatedRow[0] = newTotal < 0 ? 0 : parseFloat(newTotal)
+      const updatedFloatPrice = updatedPrices.map(p =>  p ? parseFloat(p) : 0)
+      const newTotal = updatedFloatPrice.reduce((acc, curr) => acc + curr, 0);
+      priceUpdatedRow[0] = newTotal < 0 ? 0 : parseFloat(newTotal).toFixed(2)
     
-      console.log("totals updated", priceUpdatedRow);
-      const splitTotal = priceUpdatedRow.reduce((acc, curr) => acc + curr, 0) - priceUpdatedRow[0]
+      // console.log("totals updated", priceUpdatedRow);
+      const splitTotal = parseFloat(priceUpdatedRow.reduce((acc, curr) => acc + parseFloat(curr), 0) - priceUpdatedRow[0]).toFixed(2)
       if (splitTotal == priceUpdatedRow[0]) {
         setIsSplitComplete(true)
       } else {

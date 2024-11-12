@@ -235,7 +235,7 @@ const SplitScreen = ({item, people}) => {
                     return (
                       <div key={id} className="price-td">
                         <input
-                          type="number"
+                          type="text"
                           value={prices[key]}
                           onChange={(e) =>
                             handleInput(
