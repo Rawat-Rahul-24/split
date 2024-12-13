@@ -1,0 +1,62 @@
+.home-screen {
+    display: flex;
+    border: 2px solid rgb(182, 177, 177);
+    border-radius: 7px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 30px;
+    width: 100%;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2), -4px -4px 10px rgba(255, 255, 255, 0.5);
+    gap: 25px;
+    height: 70%;
+}
+
+.home-screen:hover {
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+
+.add-split-screen-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+}
+
+.add-screen-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+}
+
+.item-number-input {
+    display: flex;
+    gap: 25px;
+}
+
+.people-number-input {
+    display: flex;
+    gap: 25px;   
+}
+
+.item-label {
+    font-family: "Playwrite GB S Guides", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.people-label {
+    font-family: "Playwrite GB S Guides", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
+
+input {
+    font-family: "Playwrite GB S Guides", cursive;
+  font-weight: 400;
+  font-style: normal;
+  
+}

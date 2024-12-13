@@ -1,7 +1,6 @@
+'use client'
 import React from "react";
 import { useState } from "react";
-import Draggable from "react-draggable";
-import SplitScreen from "./split-screen";
 import Header from "@/layouts/header";
 import "../styles/home.css";
 import AddScreen from "@/ui/addScreen";
@@ -19,24 +18,14 @@ function Home() {
   };
 
   return (
-    <div className="home-main">
+    <>
       <Header />
-      {showSplitScreen ? (
-        <FullScreenPanel>
-              <Draggable bounds=".full-screen-panel">
-                <div>
-                  <SplitScreen item={item} people={people} />
-                </div>
-              </Draggable>
-           
-        </FullScreenPanel>
-      ) : (
-        <div>
-          <AddScreen handleAddScreen={handleAddScreen} item={item} setItem={setItem} people={people} setPeople={setPeople}/>
-        </div>
-      )}
-    </div>
-  );
+      <div className="add-screen-comp">
+            <AddScreen handleAddScreen={handleAddScreen} item={item} setItem={setItem} people={people} setPeople={setPeople}/>
+          </div>
+    </>
+  )
+
 }
 
 const FullScreenPanel = ({ children }) => {

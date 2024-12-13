@@ -6,7 +6,7 @@ import {
 } from "@/utilities/handlers";
 
 
-import "../styles/split-card.css";
+import "../../styles/split-card.css";
 
 function SplitCard({ row, setRow, person, setPerson, handlers, total, setTotal, split_history, prices, setPrices, setIsSplitComplete }) {
 

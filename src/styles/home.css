@@ -3,6 +3,7 @@
     height: 100vh;
     width: 100vw;
     overflow: hidden;
+    align-items: center;
 }
 
 .full-screen-panel {
@@ -25,4 +26,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.add-screen-comp {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    height: 70%;
+    /* border: 2px solid gold; */
 }

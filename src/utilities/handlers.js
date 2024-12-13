@@ -134,6 +134,7 @@ function getPriceCalculation(
   return total;
 }
 
+//add functionality for portion split
 function updateTotals(key, total, updatedRow, currVal, ele, split_history) {
   const item = updatedRow[key];
   // console.log("item ", item);
@@ -247,8 +248,9 @@ function divideIntoEqualParts(number, parts) {
 
   if (difference > 0) {
     while (difference > 0) {
-      const r = Math.floor(Math.random() * parts);
-      dividedParts[r] = parseFloat((dividedParts[r] + 0.01).toFixed(2));
+      const randomPersonSelected = Math.floor(Math.random() * parts);
+      //todo add function to check the validity of the randomness
+      dividedParts[randomPersonSelected] = parseFloat((dividedParts[randomPersonSelected] + 0.01).toFixed(2));
       difference = parseFloat((difference - 0.01).toFixed(2));
     }
   }
@@ -261,7 +263,7 @@ function clear_total(total, prev_history) {
   // console.log("clearing the previos total before doing the new split");
   
   total.forEach((p, index) => {
-    if (index != 0 && prev_history[index] != undefined) {
+    if (prev_history[index] != undefined) {
       p = parseFloat(p - prev_history[index]).toFixed(2);
       total[index] = parseFloat(p);
     }

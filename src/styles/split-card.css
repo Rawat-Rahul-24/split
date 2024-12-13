@@ -45,6 +45,8 @@
     align-items: center;
     gap: 5px;
     height: 40px;
+    margin: 0;
+    padding: 0;
 }
 
 
@@ -96,8 +98,9 @@
     flex-basis: auto; /* Prevent parent’s influence on child's width */
     width: 100%;
     justify-content: space-around;
-    margin-bottom: 5px;
+    margin-bottom: 3.3px;
     height: 27px;
+    border: solid 0.5px lightgray;
 }
 
 .card {
