@@ -19,6 +19,7 @@ const split_history = new Map();
 const defItem = {
   0: "",
   1: "",
+  // "split-type": "parts",
   2: false,
   3: false,
   all: false,
@@ -81,9 +82,7 @@ const SplitScreen = () => {
   const handleAddRow = () => {
     const newItem = Object.entries(row[0]);
     newItem.forEach((item, index) => {
-      if (item[1] === true) {
-        item[1] = false;
-      }
+
       if (index == 1) {
         item[1] = 0;
       }
@@ -103,7 +102,10 @@ const SplitScreen = () => {
         row,
         total,
         split_history,
-        setTotal
+        setTotal,
+        prices,
+        setPrices,
+        setIsSplitComplete
       );
       const updatedRow = row.slice(0, row.length - 1);
       setRow([...updatedRow]);

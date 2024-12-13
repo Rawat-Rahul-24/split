@@ -91,12 +91,18 @@ export const handleInput = (
     val = val.replace(/^0+/, '');
   }
   
-  const regex = /^\d+(\.\d{1,2})?$/;
+  const regex = /^(\d|-\d)+(\.\d{1,2})?$/;
+  
+  if (val == "") {
+    val = 0;
+  }
 
-  if (val != ""  && !regex.test(val)) {
+
+  if (!regex.test(val)) {
     setIsValidInput(false);
     return;
   }
+
 
   console.log("current price value is", val);
   setIsValidInput(true);
@@ -307,7 +313,10 @@ export const clear_total_on_row_delete = (
   row,
   total,
   split_history,
-  setTotal
+  setTotal,
+  prices,
+  setPrices,
+  setIsSplitComplete
 ) => {
   const updatedRow = [...row];
   const priceUpdatedRow = getPriceCalculation(
@@ -320,6 +329,7 @@ export const clear_total_on_row_delete = (
   );
   // console.log(priceUpdatedRow);
   setTotal([...priceUpdatedRow]);
+  updatePrice(key, 0, prices, setPrices, priceUpdatedRow, setTotal, setIsSplitComplete)
 };
 
 
