@@ -3,16 +3,29 @@ html, body {
     padding: 0 !important;
 }
 
-
+.main-container {
+  /* position: fixed; */
+  width:100%;
+  /* margin: 10px auto; */
+  margin-top: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%
+}
 
 .split-container {
-    /* position: absolute; */
+    position: relative;
     display: flex;
     grid-auto-flow: row;
     justify-content: space-around;
     border: 1px solid teal;
-    margin: 0;
+    /* margin: 5vw; */
     padding: 0;
+    background-color: #f5f7fa;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  min-width: 50%;
 }
 
 .row-change {
@@ -35,7 +48,7 @@ html, body {
     margin-right: 3px;
 }
 
-.final-total-input {
+.total-input {
     width: 97%;
     border-radius: 5px;
 }
@@ -46,11 +59,23 @@ html, body {
     max-width: calc(185px * 4); /* Adjust width for 5 columns */
     position: relative;
     scroll-behavior: smooth;
+    background-color: #ffffff;
+  border-radius: 6px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  scroll-behavior: smooth;  /* Smooth scrolling */
+  transition: box-shadow 0.3s ease;
+  margin: 0;
+  padding: 0;
   }
+
 
   /* Hide scrollbar, but allow scrolling */
 .split-card::-webkit-scrollbar {
     display: none;
+  }
+
+  .split-card:hover {
+    box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.15);
   }
 
   .split-card {
@@ -75,19 +100,21 @@ html, body {
     z-index: 1;
     padding: 10px;
     opacity: 0.5;
+    transition: background-color 0.3s ease, transform 0.2s ease;
   }
   
   .left-arrow {
-    left: 320px; /* Outside the left edge of split-card */
+    left: 398px; /* Outside the left edge of split-card */
   }
   
   .right-arrow {
-    right: 152px; /* Outside the right edge of split-card */
+    right: 156px; /* Outside the right edge of split-card */
   }
   
   .arrow:hover {
     background-color: rgba(0, 0, 0, 0.6);
     opacity: 0.8;
+    /* transform: scale(1.3); */
   }
 
   .hide {
@@ -105,4 +132,28 @@ html, body {
 
   .add-all-text {
     height: 40px;
+  }
+
+  @media (max-width: 600px) {
+    .split-card {
+      gap: 5px;
+    }
+  
+    .person-input {
+      width: 70px;
+    }
+  
+    .arrow {
+      width: 25px;
+      height: 25px;
+    }
+  }
+
+  .incomplete-split {
+    border-color: red;
+    outline: none; 
+  }
+
+  .incomplete-split:focus {
+    border-color: red;
   }

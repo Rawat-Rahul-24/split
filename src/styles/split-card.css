@@ -45,6 +45,8 @@
     align-items: center;
     gap: 5px;
     height: 40px;
+    margin: 0;
+    padding: 0;
 }
 
 
@@ -56,6 +58,15 @@
     width: 97%;
     height: 22px;
     border-radius: 5px;
+    border: 1px solid #dcdfe3;
+    outline: none;
+    font-size: 0.9rem;
+    transition: border-color 0.3s ease;
+  }
+
+  .person-input:focus {
+    border-color: #7aafff;
+    box-shadow: 0 0 4px rgba(122, 175, 255, 0.3);
   }
   
   /* Styling for buttons and person section */
@@ -87,8 +98,9 @@
     flex-basis: auto; /* Prevent parent’s influence on child's width */
     width: 100%;
     justify-content: space-around;
-    margin-bottom: 5px;
+    margin-bottom: 3.3px;
     height: 27px;
+    border: solid 0.5px lightgray;
 }
 
 .card {
