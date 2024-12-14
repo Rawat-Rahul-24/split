@@ -331,7 +331,7 @@ const SplitScreen = () => {
             {row.map((item, key) => {
                   let keys = Object.keys(item);
                   return (
-                    <div className="price-selectors">
+                    <div key={key} className="price-selectors">
                       {keys.map((ele, id) => {
                         if (ele === "all") {
                           return (
