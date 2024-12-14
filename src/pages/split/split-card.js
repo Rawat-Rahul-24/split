@@ -9,15 +9,11 @@ import {
 import "../../styles/split-card.css";
 
 function SplitCard({ row, setRow, person, setPerson, handlers, total, setTotal, split_history, prices, setPrices, setIsSplitComplete }) {
-
-  // console.log(row, person);
-
-
   return (
     <div className="card">
       <div className="card-container">
         <div className="person-div">
-          {person.map((n, index) => {
+          {person?.map((n, index) => {
             return (
               <div key={index} className="p-heading">
                 <input type="text" placeholder={n} className="person-input" />
@@ -26,11 +22,10 @@ function SplitCard({ row, setRow, person, setPerson, handlers, total, setTotal, 
           })}
         </div>
         <div className="checkbox-row">
-          {row.map((item, key) => {
+          {row?.map((item, key) => {
             let keys = Object.keys(item);
-
             return (
-              <div className="price-selectors">
+              <div key={key} className="price-selectors">
                 {keys.map((ele, id) => {
                   if (ele > 1) {
                     return (
@@ -65,7 +60,7 @@ function SplitCard({ row, setRow, person, setPerson, handlers, total, setTotal, 
         </div>
 
         <div className="total-row">
-          {total.map((item, index) => {
+          {total?.map((item, index) => {
             if (index != 0) {
               return (
                 <div key={index} className="total-single">
