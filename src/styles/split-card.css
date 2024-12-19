@@ -98,9 +98,14 @@
     flex-basis: auto; /* Prevent parent’s influence on child's width */
     width: 100%;
     justify-content: space-around;
-    margin-bottom: 3.3px;
+    margin-bottom: 4px;
     height: 27px;
     border: solid 0.5px lightgray;
+}
+
+.price-selectors > div {
+  margin: 0;
+  padding: 0;
 }
 
 .card {
@@ -118,6 +123,10 @@
 .checkbox-row {
     display: flex;
     flex-direction: column;
+}
+
+.checkbox-row > div:nth-child(odd) {
+  background-color: lightgray;
 }
 
 .selection {

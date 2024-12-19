@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import {
   handleSelect,
   handleInput,

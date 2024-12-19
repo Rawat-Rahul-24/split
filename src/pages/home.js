@@ -6,7 +6,7 @@ import "../styles/home.css";
 import AddScreen from "@/ui/addScreen";
 
 function Home() {
-  const [showSplitScreen, setShowSplitScreen] = useState(false);
+
   const [item, setItem] = useState()
   const [people, setPeople] = useState()
 
