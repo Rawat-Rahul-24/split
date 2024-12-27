@@ -6,7 +6,7 @@
 
 .row {
     display: flex;
-    margin-bottom: 5px;
+    margin-bottom: 6.4px;
     height: 27px;
 }
 
@@ -98,7 +98,7 @@
     flex-basis: auto; /* Prevent parent’s influence on child's width */
     width: 100%;
     justify-content: space-around;
-    margin-bottom: 4px;
+    margin-bottom: 5px;
     height: 27px;
     border: solid 0.5px lightgray;
 }
